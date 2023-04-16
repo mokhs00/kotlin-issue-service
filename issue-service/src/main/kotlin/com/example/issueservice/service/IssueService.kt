@@ -2,6 +2,7 @@ package com.example.issueservice.service
 
 import com.example.issueservice.domain.Issue
 import com.example.issueservice.domain.IssueRepository
+import com.example.issueservice.domain.enums.IssueStatus
 import com.example.issueservice.model.IssueRequest
 import com.example.issueservice.model.IssueResponse
 import org.springframework.stereotype.Service
@@ -12,7 +13,7 @@ class IssueService(
     private val issueRepository: IssueRepository,
 ) {
     @Transactional
-    fun create(userId: Long,  request: IssueRequest): IssueResponse {
+    fun create(userId: Long, request: IssueRequest): IssueResponse {
         val issue = Issue(
             summary = request.summary,
             description = request.description,
@@ -24,5 +25,10 @@ class IssueService(
 
         return IssueResponse.of(issueRepository.save(issue))
     }
+
+    fun getAll(status: IssueStatus) =
+        issueRepository.findAllByStatusOrderByCreatedAtDesc(status)
+            ?.map { IssueResponse.of(it) }
+
 
 }
