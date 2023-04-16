@@ -54,4 +54,6 @@ class IssueService(
             IssueResponse.of(issueRepository.save(this))
         }
     }
+
+    fun delete(id: Long) = issueRepository.deleteById(id)
 }
