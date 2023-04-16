@@ -28,15 +28,18 @@ class IssueService(
         return IssueResponse.of(issueRepository.save(issue))
     }
 
+    @Transactional(readOnly = true)
     fun getAll(status: IssueStatus) =
         issueRepository.findAllByStatusOrderByCreatedAtDesc(status)
             ?.map { IssueResponse.of(it) }
 
+    @Transactional(readOnly = true)
     fun get(id: Long): IssueResponse {
         val issue = issueRepository.findByIdOrNull(id) ?: throw NotFoundException("이슈가 존재하지 않습니다 id: '$id'")
         return IssueResponse.of(issue)
     }
 
+    @Transactional
     fun edit(userId: Long, id: Long, request: IssueRequest): IssueResponse {
         val issue = issueRepository.findByIdOrNull(id) ?: throw NotFoundException("이슈가 존재하지 않습니다 id: '$id'")
 
