@@ -1,4 +1,4 @@
-package example.issueservice.exception
+package com.example.issueservice.exception
 
 data class ErrorResponse(
     val code: Int,

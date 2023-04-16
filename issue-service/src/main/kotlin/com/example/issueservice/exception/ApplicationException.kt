@@ -1,4 +1,4 @@
-package example.issueservice.exception
+package com.example.issueservice.exception
 
 sealed class ApplicationException(
     val code: Int,

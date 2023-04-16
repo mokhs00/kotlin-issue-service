@@ -1,4 +1,4 @@
-package example.issueservice.exception
+package com.example.issueservice.exception
 
 import com.auth0.jwt.exceptions.TokenExpiredException
 import mu.KotlinLogging

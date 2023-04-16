@@ -1,4 +1,4 @@
-package example.issueservice.config
+package com.example.issueservice.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
