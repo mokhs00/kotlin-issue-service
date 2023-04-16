@@ -31,7 +31,7 @@ class IssueController(
     ) = issueService.getAll(status)
 
     @GetMapping("/{id}")
-    fun getAll(
+    fun get(
         authUser: AuthUser,
         @PathVariable id: Long,
     ) = issueService.get(id)
