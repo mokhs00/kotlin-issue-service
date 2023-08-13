@@ -1,2 +1,9 @@
 server:
   port: 8081
+
+
+jwt:
+  issuer: mokhs
+  subject: auth
+  expires-time: 3600
+  secret: temp-secret
