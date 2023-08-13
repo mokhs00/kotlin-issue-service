@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 class WebConfig(
     private val authUserHandlerArgumentResolver: AuthUserHandlerArgumentResolver,
 ) : WebMvcConfigurationSupport() {
-
     override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
         argumentResolvers.apply {
             add(authUserHandlerArgumentResolver)
