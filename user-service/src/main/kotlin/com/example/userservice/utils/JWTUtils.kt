@@ -7,7 +7,7 @@ import com.example.userservice.config.JWTProperties
 import java.util.*
 
 object JWTUtils {
-    fun createToken(claim: JwtClaim, properties: JWTProperties) =
+    fun createToken(claim: JwtClaim, properties: JWTProperties): String =
         JWT.create()
             .withIssuer(properties.issuer)
             .withSubject(properties.subject)
@@ -19,7 +19,7 @@ object JWTUtils {
             .withClaim("username", claim.username)
             .sign(Algorithm.HMAC256(properties.secret))
 
-    fun decode(token: String, secret: String, issuer: String): DecodedJWT{
+    fun decode(token: String, secret: String, issuer: String): DecodedJWT {
         val algorithm = Algorithm.HMAC256(secret)
 
         val verifier = JWT.require(algorithm)

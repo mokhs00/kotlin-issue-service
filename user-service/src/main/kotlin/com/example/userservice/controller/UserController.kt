@@ -1,13 +1,12 @@
 package com.example.userservice.controller
 
+import com.example.userservice.model.AuthToken
 import com.example.userservice.model.SignInRequest
 import com.example.userservice.model.SignInResponse
 import com.example.userservice.model.SignUpRequest
 import com.example.userservice.service.UserService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -22,5 +21,11 @@ class UserController(
     @PostMapping("signin")
     suspend fun signIn(@RequestBody request: SignInRequest): SignInResponse {
         return userService.signIn(request)
+    }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    suspend fun logout(@AuthToken token: String) {
+        userService.logout(token)
     }
 }

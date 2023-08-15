@@ -14,5 +14,9 @@ class CoroutineCacheManager<T> {
         localCache[key] = CacheWrapper(value, Instant.now().plusMillis(ttl.toMillis()))
     }
 
+    suspend fun awaitEvict(key: String) {
+        localCache.remove(key)
+    }
+
     data class CacheWrapper<T>(val cached: T, val ttl: Instant)
 }
