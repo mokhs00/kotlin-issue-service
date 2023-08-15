@@ -3,6 +3,7 @@ package com.example.userservice.service
 import com.example.userservice.config.JWTProperties
 import com.example.userservice.domain.entity.User
 import com.example.userservice.domain.repository.UserRepository
+import com.example.userservice.exception.InvalidJWTTokenException
 import com.example.userservice.exception.PasswordNotMatchedException
 import com.example.userservice.exception.UserExistException
 import com.example.userservice.exception.UserNotFoundException
@@ -19,7 +20,7 @@ import java.time.Duration
 class UserService(
     private val userRepository: UserRepository,
     private val jwtProperties: JWTProperties,
-    private val cacheManager: CoroutineCacheManager<User>,
+    private val cacheManager: ConcurrentCacheManager<User>,
 ) {
     companion object {
         private val CACHE_TTL = Duration.ofMinutes(1)
@@ -68,5 +69,20 @@ class UserService(
 
     suspend fun logout(token: String) {
         cacheManager.awaitEvict(token)
+    }
+
+    suspend fun getByToken(token: String): User {
+        val cachedUser = cacheManager.awaitGetOrPut(key = token, ttl = CACHE_TTL) {
+            val decodeJWT = JWTUtils.decode(token, jwtProperties.secret, jwtProperties.issuer)
+            val userId = decodeJWT.claims["userId"]?.asLong() ?: throw InvalidJWTTokenException()
+
+            get(userId)
+        }
+
+        return cachedUser
+    }
+
+    suspend fun get(userId: Long): User {
+        return userRepository.findById(userId) ?: throw UserNotFoundException()
     }
 }
